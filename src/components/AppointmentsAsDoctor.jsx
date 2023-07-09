@@ -1,12 +1,18 @@
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Tab, Tabs } from "react-bootstrap";
 import { BiTimeFive } from "react-icons/bi";
 import { useDeleteAppointmentMutation } from "../slices/userApiSlice";
 import ApproveModal from "./ApproveModal";
 
-export default function AppointmentsAsDoctor({ data, associate_doctor,payForAppointment }) {
-  const [activeTab, seActiveTab] = useState("As Doctor");
+export default function AppointmentsAsDoctor({
+  data,
+  associate_doctor,
+  payForAppointment,
+  activeTab,
+  seActiveTab
+}) {
+  
   const [deleteAppointment, { data: deletedAppointment }] =
     useDeleteAppointmentMutation();
 
@@ -20,16 +26,15 @@ export default function AppointmentsAsDoctor({ data, associate_doctor,payForAppo
     //cancel button will be removed from doctor side
   };
 
-
   return (
     <div>
       <ApproveModal show={show} setShow={setShow} id={selectedId} />
 
       <Tabs
-        defaultActiveKey={activeTab}
-        id="fill-tab-example"
+       activeKey={activeTab}
+        onSelect={(k) => seActiveTab(k)}
         className="mb-3"
-        fill
+       
       >
         <Tab eventKey="As Doctor" title="As Doctor">
           {data?.doctor?.map((appointment) => {
@@ -42,7 +47,13 @@ export default function AppointmentsAsDoctor({ data, associate_doctor,payForAppo
                         {" "}
                         {appointment.patientName} <small>(patient)</small>
                       </span>{" "}
-                      <p className={`badge bg-${appointment.status === 'approved' ? 'success' : 'primary'} text-wrap`}>
+                      <p
+                        className={`badge bg-${
+                          appointment.status === "approved"
+                            ? "success"
+                            : "primary"
+                        } text-wrap`}
+                      >
                         {appointment.status}
                       </p>{" "}
                     </Card.Title>
@@ -66,17 +77,18 @@ export default function AppointmentsAsDoctor({ data, associate_doctor,payForAppo
                         {appointment.status === "pending" &&
                           !appointment.isPaid && (
                             <>
-                            <button
-                              type="button"
-                              onClick={() => deleteAppointment(appointment._id)}
-                              className="btn btn-danger"
-                            >
-                              Cancel
-                            </button>
-                          
-                            
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  deleteAppointment(appointment._id)
+                                }
+                                className="btn btn-danger"
+                              >
+                                Cancel
+                              </button>
                             </>
                           )}
+                        
                         {appointment.status === "pending" &&
                           appointment.isPaid && (
                             <button
@@ -130,18 +142,22 @@ export default function AppointmentsAsDoctor({ data, associate_doctor,payForAppo
                       </p>{" "}
                     </div>
                     <div className="text-center">
-                     {!appointment.isPaid && <Button
-                        onClick={() => deleteAppointment(appointment._id)}
-                        className="btn-danger"
-                      >
-                        Cancel
-                      </Button>}
-                     {!appointment.isPaid &&  <Button
-                        onClick={() => payForAppointment(appointment._id)}
-                        className="btn-primary"
-                      >
-                        Pay Now
-                      </Button>}
+                      {!appointment.isPaid && (
+                        <Button
+                          onClick={() => deleteAppointment(appointment._id)}
+                          className="btn-danger"
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                      {!appointment.isPaid && (
+                        <Button
+                          onClick={() => payForAppointment(appointment._id,Number(appointment.doctor.fee))}
+                          className="btn-primary"
+                        >
+                          Pay Now
+                        </Button>
+                      )}
                     </div>
                   </Card.Body>
                 </Card>

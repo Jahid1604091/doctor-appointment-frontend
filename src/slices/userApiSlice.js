@@ -130,6 +130,14 @@ export const userApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['User']
         }),
+        makePayment: builder.mutation({
+            query: (data) => ({
+                url: `api/payment/ssl-request`,
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['User']
+        }),
 
 
     })
@@ -151,5 +159,6 @@ export const {
     useUploadAvatarMutation,
     useForgotPasswordMutation,
     useResetPasswordMutation,
+    useMakePaymentMutation,
 
 } = userApiSlice;

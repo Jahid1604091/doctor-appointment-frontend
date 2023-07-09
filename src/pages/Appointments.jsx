@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useDeleteAppointmentMutation,
   useGetAllAppointmentsQuery,
   useGetAllApprovedDoctorsQuery,
+  useMakePaymentMutation,
 } from "../slices/userApiSlice";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import moment from "moment";
@@ -12,11 +13,25 @@ import NotFound from "../components/NotFound";
 import { useSelector } from "react-redux";
 
 import AppointmentsAsDoctor from "../components/AppointmentsAsDoctor";
+import { useLocation } from "react-router-dom";
 
 export default function Appointments() {
+
+  const [activeTab, seActiveTab] = useState(JSON.parse(localStorage.getItem('activeTab')) || 'As Doctor');
+  useEffect(() => {
+    const getActiveTab = JSON.parse(localStorage.getItem("activeTab"));
+    if (getActiveTab) {
+      seActiveTab(getActiveTab);
+    }
+  }, [seActiveTab]);
+
+  useEffect(() => {
+    localStorage.setItem("activeTab", JSON.stringify(activeTab));
+  }, [activeTab]);
   const { data } = useGetAllAppointmentsQuery();
-  const [deleteAppointment, { data: deletedAppointment }] =
-    useDeleteAppointmentMutation();
+  const [deleteAppointment, { data: deletedAppointment }] = useDeleteAppointmentMutation();
+  const [makePayment] = useMakePaymentMutation();
+
   const { data: doctors } = useGetAllApprovedDoctorsQuery();
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -27,10 +42,32 @@ export default function Appointments() {
     return user?.user.name;
   };
 
+  const [isValidated, setIsValidated] = useState(false)
+  const { search } = useLocation();
+  
+  
+  useEffect(() => {
+      if (search.split('=')[1] === 'VALID') {
+          setIsValidated(true)
+          // dispatch(payOrder(id))
+      }
+  }, [isValidated,search])
 
-  const payForAppointment = id =>{
-    console.log(id)
-  }
+  // useEffect(() => {
+  //     dispatch(getMyOrderDetails(id))
+  // }, [isValidated])
+
+
+  const paymentHandler = async (id,fee) => {
+
+    const payment_data = {
+        total_amount:fee,
+        tran_id: id,
+    }
+    const { data: { data } } = await makePayment(payment_data);
+    await window.location.replace(data?.GatewayPageURL);
+}
+
   
   return (
     <Layout>
@@ -40,7 +77,9 @@ export default function Appointments() {
           <AppointmentsAsDoctor
             data={data}
             associate_doctor={associate_doctor}
-            payForAppointment={payForAppointment}
+            payForAppointment={paymentHandler}
+            activeTab={activeTab}
+            seActiveTab={seActiveTab}
           />
         ) : (
           data?.map((appointment) => {
@@ -79,7 +118,7 @@ export default function Appointments() {
                         Cancel
                       </Button>}
                      {!appointment.isPaid && 
-                     <Button onClick={() =>payForAppointment(appointment._id)} className="btn-primary">
+                     <Button onClick={() =>paymentHandler(appointment._id,Number(appointment?.doctor?.fee))} className="btn-primary">
                         Pay Now
                       </Button>}
                     </div>
