@@ -9,7 +9,7 @@ import styled from "styled-components";
 export default function Users() {
   const { data } = useGetAllUsersQuery();
   const [deleteUser] = useDeleteUserMutation();
-  
+ 
   const handleDelete = async (id) => {
     try {
       const res = await deleteUser(id);
@@ -17,7 +17,7 @@ export default function Users() {
     } catch (error) {}
   };
 
-  const tbody_data = data?.map((user) => {
+  const tbody_data = data?.data?.map((user) => {
     return (
       <tr key={user._id}>
         <td>{user.name}</td>
@@ -28,7 +28,7 @@ export default function Users() {
       </tr>
     );
   });
-  if (data?.length === 0) return <NotFound>No User Found!</NotFound>
+  if (data?.data?.length === 0) return <NotFound>No User Found!</NotFound>
 
   return (
     <Layout>

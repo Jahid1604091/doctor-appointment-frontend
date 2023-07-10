@@ -16,18 +16,28 @@ import AppointmentsAsDoctor from "../components/AppointmentsAsDoctor";
 import { useLocation } from "react-router-dom";
 
 export default function Appointments() {
-
+  // JSON.parse(localStorage.getItem('activeTab')) || 
   const [activeTab, seActiveTab] = useState(JSON.parse(localStorage.getItem('activeTab')) || 'As Doctor');
+
+  useEffect(() => {
+    activeTab && localStorage.setItem("activeTab", JSON.stringify(activeTab));
+  }, [activeTab]);
   useEffect(() => {
     const getActiveTab = JSON.parse(localStorage.getItem("activeTab"));
     if (getActiveTab) {
       seActiveTab(getActiveTab);
     }
-  }, [seActiveTab]);
+  }, []);
 
+  const [isValidated, setIsValidated] = useState(false)
+  const { search } = useLocation();
   useEffect(() => {
-    localStorage.setItem("activeTab", JSON.stringify(activeTab));
-  }, [activeTab]);
+    if (search.split('=')[1] === 'VALID') {
+        setIsValidated(true)
+    }
+}, [isValidated,search])
+
+
   const { data } = useGetAllAppointmentsQuery();
   const [deleteAppointment, { data: deletedAppointment }] = useDeleteAppointmentMutation();
   const [makePayment] = useMakePaymentMutation();
@@ -41,22 +51,6 @@ export default function Appointments() {
     const user = doctors?.find((doc) => doc._id == doctorId);
     return user?.user.name;
   };
-
-  const [isValidated, setIsValidated] = useState(false)
-  const { search } = useLocation();
-  
-  
-  useEffect(() => {
-      if (search.split('=')[1] === 'VALID') {
-          setIsValidated(true)
-          // dispatch(payOrder(id))
-      }
-  }, [isValidated,search])
-
-  // useEffect(() => {
-  //     dispatch(getMyOrderDetails(id))
-  // }, [isValidated])
-
 
   const paymentHandler = async (id,fee) => {
 
