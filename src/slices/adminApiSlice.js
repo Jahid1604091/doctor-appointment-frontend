@@ -1,11 +1,14 @@
+import { createEntityAdapter, createSelector } from "@reduxjs/toolkit";
 import { apiSlice } from "./apiSlice";
 const URL = '/api/admin';
+
 
 export const adminApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllUsers: builder.query({
-            query:()=> `${URL}/users`,
-            providesTags:['Users']
+            query:({search,page})=> `${URL}/users?search=${search}&page=${page}`,
+            providesTags:['Users'],
+            // transformResponse: responseData=>responseData.data
         }),
         deleteUser:builder.mutation({
             query:(id)=>({

@@ -36,7 +36,7 @@ export default function Home() {
                     <Card className="card mb-3">
                       <Card.Img
                         variant="top"
-                        src={doctor?.user?.avatar?.url || "https://images.pexels.com/photos/4560086/pexels-photo-4560086.jpeg?auto=compress&cs=tinysrgb&w=1260&h=500&dpr=1"}
+                        src={doctor?.user?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUiF_OQ_-RS1ksidGVXXFQ-nJehHFxbHfIoQ&usqp=CAU'}
                         className="avatar"
                       />
                       <Card.Body>
