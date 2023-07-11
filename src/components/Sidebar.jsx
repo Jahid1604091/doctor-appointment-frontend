@@ -2,10 +2,12 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { FaTachometerAlt, FaAdn, FaBuffer, FaTimes } from "react-icons/fa";
+import { FaTachometerAlt, FaAdn, FaUsers, FaTimes,FaDochub} from "react-icons/fa";
+import { MdMenuOpen } from "react-icons/md";
+import {BiLowVision} from 'react-icons/bi';
+import {CgProfile} from 'react-icons/cg';
 import { useDispatch, useSelector } from "react-redux";
 import { setCollapsed } from "../slices/appSlice";
-import { MdMenuOpen } from "react-icons/md";
 export default function Sidebar() {
   const { pathname } = useLocation();
   const { collapsedSidebar } = useSelector((state) => state.app);
@@ -37,7 +39,7 @@ export default function Sidebar() {
       id: 4,
       text: "profile",
       path: "/profile",
-      icon: <FaBuffer />,
+      icon: <CgProfile />,
     },
   ];
 
@@ -58,7 +60,13 @@ export default function Sidebar() {
       id: 3,
       text: "profile",
       path: "/profile",
-      icon: <FaBuffer />,
+      icon: <CgProfile />,
+    },
+    {
+      id: 4,
+      text: "Visited",
+      path: "/visited",
+      icon: <BiLowVision />,
     },
   ];
 
@@ -73,19 +81,19 @@ export default function Sidebar() {
       id: 2,
       text: "doctors",
       path: "/admin/doctors",
-      icon: <FaAdn />,
+      icon: <FaDochub/>,
     },
     {
       id: 3,
       text: "users",
       path: "/admin/users",
-      icon: <FaAdn />,
+      icon: <FaUsers />,
     },
     {
       id: 4,
       text: "profile",
       path: "/profile",
-      icon: <FaBuffer />,
+      icon: <CgProfile />,
     },
   ];
 
