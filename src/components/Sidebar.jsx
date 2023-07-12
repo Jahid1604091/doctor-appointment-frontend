@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { FaTachometerAlt, FaAdn, FaUsers, FaTimes,FaDochub} from "react-icons/fa";
 import { MdMenuOpen } from "react-icons/md";
 import {BiLowVision} from 'react-icons/bi';
+import {AiOutlineSchedule} from 'react-icons/ai';
 import {CgProfile} from 'react-icons/cg';
 import { useDispatch, useSelector } from "react-redux";
 import { setCollapsed } from "../slices/appSlice";
@@ -27,7 +28,7 @@ export default function Sidebar() {
       id: 2,
       text: "Appointments",
       path: "/booked-appointments",
-      icon: <FaAdn />,
+      icon: <AiOutlineSchedule />,
     },
     {
       id: 3,
@@ -53,7 +54,7 @@ export default function Sidebar() {
       id: 2,
       text: "Appointments",
       path: "/booked-appointments",
-      icon: <FaAdn />,
+      icon: <AiOutlineSchedule />,
     },
 
     {

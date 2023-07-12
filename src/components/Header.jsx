@@ -69,7 +69,23 @@ function Header() {
             <ul className="links" ref={linksRef}>
               {userInfo && (
                 <>
-                  <li> {userInfo?.name}</li>
+                  <li>
+                    <img
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        borderRadius: "50%",
+                        margin: "5px",
+                        border: "1px solid #000",
+                      }}
+                      src={
+                        userInfo?.avatar?.url ||
+                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUiF_OQ_-RS1ksidGVXXFQ-nJehHFxbHfIoQ&usqp=CAU"
+                      }
+                      alt={userInfo?.name}
+                    />
+                    {userInfo?.name}{" "}
+                  </li>
                   <li className="notification-icon">
                     <Link to="/notifications">
                       <GrNotification />{" "}

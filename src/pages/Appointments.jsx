@@ -12,7 +12,7 @@ import Layout from "../components/Layout";
 import NotFound from "../components/NotFound";
 import { useSelector } from "react-redux";
 
-import AppointmentsAsDoctor from "../components/AppointmentsAsDoctor";
+import AppointmentsAsDoctor from "../components/doctors/AppointmentsAsDoctor";
 import { useLocation } from "react-router-dom";
 
 export default function Appointments() {

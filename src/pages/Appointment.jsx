@@ -139,7 +139,7 @@ export default function Appointment() {
             <Col md={6}>
               <Card className="text-center p-1">
                 <Image
-                  src={ data?.user?.avatar?.url || "https://images.pexels.com/photos/4560086/pexels-photo-4560086.jpeg?auto=compress&cs=tinysrgb&w=171&h=180&dpr=1"}
+                  src={ data?.user?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUiF_OQ_-RS1ksidGVXXFQ-nJehHFxbHfIoQ&usqp=CAU'}
                   roundedCircle
                 />
                 <Card.Body>

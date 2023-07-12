@@ -18,6 +18,7 @@ export default function Profile() {
 
   const [deleteProfile, { isLoading }] = useDeleteProfileMutation();
   const {data} = useGetDoctorDetailsByUserIdQuery(_id);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

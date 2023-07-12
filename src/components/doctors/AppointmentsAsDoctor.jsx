@@ -2,8 +2,8 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Tab, Tabs } from "react-bootstrap";
 import { BiTimeFive } from "react-icons/bi";
-import { useDeleteAppointmentMutation } from "../slices/userApiSlice";
-import ApproveModal from "./ApproveModal";
+import { useDeleteAppointmentMutation } from "../../slices/userApiSlice";
+import ApproveModal from "../ApproveModal";
 
 export default function AppointmentsAsDoctor({
   data,
@@ -24,6 +24,9 @@ export default function AppointmentsAsDoctor({
     setSelectedId(id);
     //status will be approved and zoom link will be send via email
     //cancel button will be removed from doctor side
+  };
+  const sendPrescriptionHandler = (email) => {
+   console.log(`user - email :`,email)
   };
 
   return (
@@ -99,6 +102,18 @@ export default function AppointmentsAsDoctor({
                               }
                             >
                               Approve
+                            </button>
+                          )}
+                        {
+                          appointment.isVisited && (
+                            <button
+                              type="button"
+                              className="btn btn-primary"
+                              onClick={() =>
+                                sendPrescriptionHandler(appointment.patientEmail)
+                              }
+                            >
+                              Send Prescription
                             </button>
                           )}
                       </div>
