@@ -13,7 +13,7 @@ import { FaBars } from "react-icons/fa";
 import { links } from "../data";
 import logo from "/logo.png";
 import { toast } from "react-hot-toast";
-function Header() {
+function Header(props) {
   const [showLinks, setShowLinks] = useState(false);
   const linksContainerRef = useRef(null);
   const linksRef = useRef(null);

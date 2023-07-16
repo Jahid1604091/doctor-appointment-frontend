@@ -27,6 +27,8 @@ import Appointments from "./pages/Appointments.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import VisitedPatients from "./pages/VisitedPatients.jsx";
+import {io} from 'socket.io-client';
+const socket = io('http://localhost:5000');
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,7 +41,7 @@ const router = createBrowserRouter(
       <Route path="*" element={<NotFound />} />
 
       <Route path="" element={<PrivateRoute />}>
-        <Route index path="/" element={<Home />} />
+        <Route index path="/" element={<Home socket={socket} />} />
         <Route path="/booked-appointments" element={<Appointments />} />
         <Route path="/apply-as-doctor" element={<ApplyAsDoctor />} />
         <Route path="/profile" element={<Profile />} />
@@ -48,7 +50,7 @@ const router = createBrowserRouter(
 
         <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/doctors" element={<Doctors />} />
-        <Route path="/doctors/:id" element={<Appointment />} />
+        <Route path="/doctors/:id" element={<Appointment socket={socket} />} />
         <Route path="/doctors/visited/:id" element={<VisitedPatients />} />
       </Route>
     </Route>

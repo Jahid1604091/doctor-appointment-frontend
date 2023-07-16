@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/Layout";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
@@ -8,8 +8,15 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 import Fetching from "../components/Fetching";
 import NotFound from "../components/NotFound";
+import { useSelector } from "react-redux";
 
-export default function Home() {
+export default function Home(props) {
+  const {userInfo} = useSelector(state=>state.auth)
+  //add new Logged In User
+  useEffect(() => {
+    props?.socket?.emit("newUser", userInfo?.name);
+  }, [props?.socket, userInfo]);
+
   const {
     data=[],
     isLoading,

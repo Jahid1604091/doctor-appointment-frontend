@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import {
   useCheckAvailabilityMutation,
   useGetDoctorByIdQuery,
@@ -14,11 +14,17 @@ import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import disabledDateTime from "../helpers/timeSpecify";
 
-export default function Appointment() {
+
+export default function Appointment(props) {
+ 
+
+
+
+
   const { id } = useParams();
   const { userInfo } = useSelector((state) => state.auth);
   const { data } = useGetDoctorByIdQuery(id);
-
+ 
   const [newAppointment] = useNewAppointmentMutation();
 
   const timings = `${moment(data?.timings[0]).format("hh:mm a")} - ${moment(
@@ -30,7 +36,6 @@ export default function Appointment() {
   const [available, setAvailable] = useState(false);
   const [checkAvailability] = useCheckAvailabilityMutation();
 
-
   const handleNewAppoint = async (e) => {
     e.preventDefault();
     const { data } = await newAppointment({
@@ -41,6 +46,14 @@ export default function Appointment() {
     });
     if (data.success) {
       toast.success("Appointment Done ! Wait for Doctor respond");
+
+      //trigger socket
+      props?.socket?.emit('new_appointment_send',{
+        patineName:userInfo?.name,
+        doctorName:data?.user?.name,
+        type:'new-appointment'
+      });
+
       setAvailable(false);
     } else {
       toast.error("Something Wrong!");
@@ -77,7 +90,7 @@ export default function Appointment() {
           <Row>
             <Col>
               <h3>Appointment</h3>
-              <hr />
+              <hr /> 
             </Col>
           </Row>
 
@@ -108,7 +121,7 @@ export default function Appointment() {
                       onChange={(value) => {
                         setTime(value);
                       }}
-                      disabledTime={()=>disabledDateTime(data?.timings)}
+                      disabledTime={() => disabledDateTime(data?.timings)}
                     />
                     <br />
                     <div className="btn-group btn-group-sm my-2">
@@ -139,7 +152,10 @@ export default function Appointment() {
             <Col md={6}>
               <Card className="text-center p-1">
                 <Image
-                  src={ data?.user?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUiF_OQ_-RS1ksidGVXXFQ-nJehHFxbHfIoQ&usqp=CAU'}
+                  src={
+                    data?.user?.avatar?.url ||
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUiF_OQ_-RS1ksidGVXXFQ-nJehHFxbHfIoQ&usqp=CAU"
+                  }
                   roundedCircle
                 />
                 <Card.Body>
@@ -148,8 +164,11 @@ export default function Appointment() {
                     {data?.expertise_in}
                   </Card.Subtitle>
                   <Card.Text>
-                    <span> Per Visit : <strong>{data?.fee}</strong> Tk</span> <br />
-                  
+                    <span>
+                      {" "}
+                      Per Visit : <strong>{data?.fee}</strong> Tk
+                    </span>{" "}
+                    <br />
                   </Card.Text>
                 </Card.Body>
               </Card>
