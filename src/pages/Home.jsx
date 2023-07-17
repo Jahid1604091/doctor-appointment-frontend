@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import { Card, Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
@@ -10,24 +10,36 @@ import Fetching from "../components/Fetching";
 import NotFound from "../components/NotFound";
 
 export default function Home() {
+  const [search, setSearch] = useState("");
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [query, setQuery] = useState({});
   const {
     data=[],
     isLoading,
     isFetching,
     isError,
     error,
-  } = useGetAllApprovedDoctorsQuery();
-
+  } = useGetAllApprovedDoctorsQuery(query);
+  useEffect(() => {
+    setQuery({ ...query, search, page: selectedPage });
+  }, [search, selectedPage]);
   if (isError) return <Error error={error} />;
-  if (data.length === 0) return <NotFound>No Approved Doctor Found!</NotFound>;
-  if (isLoading) return <Loader />;
-  if (isFetching) return <Fetching />;
+  // if (data.length === 0) return <NotFound>No Approved Doctor Found!</NotFound>;
+  // if (isLoading) return <Loader />;
+  // if (isFetching) return <Fetching />;
 
 
   return (
     <Layout>
       <Wrapper>
         <Container>
+        <input
+              type="search"
+              placeholder="Name, Expertise etc ..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          {data?.length === 0 && <div>No Approved Doctor Found!</div>}
           <Row className="">
             {data?.map((doctor) => {
               return (

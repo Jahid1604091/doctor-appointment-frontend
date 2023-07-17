@@ -18,7 +18,7 @@ export const adminApiSlice = apiSlice.injectEndpoints({
             invalidatesTags:['Users']
         }),
         getAllDoctors: builder.query({
-            query:()=> `${URL}/doctors`,
+            query:({search,page})=> `${URL}/doctors?search=${search}&page=${page}`,
             providesTags:['Doctors']
         }),
         approveAsDoctor:builder.mutation({

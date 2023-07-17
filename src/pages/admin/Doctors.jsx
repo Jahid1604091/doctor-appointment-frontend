@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { Table } from "react-bootstrap";
 import {
@@ -11,12 +11,22 @@ import NotFound from "../../components/NotFound";
 import styled from "styled-components";
 import moment from "moment";
 import { toast } from "react-hot-toast";
+import Loader from "../../components/Loader";
+import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 
 export default function Doctors() {
-  const { data } = useGetAllDoctorsQuery();
+  const [search, setSearch] = useState("");
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [query, setQuery] = useState({ page: selectedPage});
+  const { data,isFetching } = useGetAllDoctorsQuery(query);
   const [approveAsDoctor] = useApproveAsDoctorMutation();
   const [removeAsDoctor, { isLoading }] = useRemoveAsDoctorMutation();
 
+  useEffect(() => {
+    setQuery({ ...query, search, page: selectedPage });
+  }, [search, selectedPage]);
+
+ 
   const handleApprove = async (id) => {
     try {
       const res = await approveAsDoctor(id);
@@ -31,7 +41,7 @@ export default function Doctors() {
     } catch (error) {}
   };
 
-  const tbody_data = data?.map((doctor) => {
+  const tbody_data = data?.data?.map((doctor) => {
     return (
       <tr key={doctor?._id}>
         <td className="text-capitalize">
@@ -67,19 +77,24 @@ export default function Doctors() {
       </tr>
     );
   });
-  if (data?.length === 0) return <NotFound>No Doctor Found!</NotFound>;
+  // if (data?.count === 0) return <NotFound>No Doctor Found!</NotFound>;
+  if ((isLoading || isFetching) && !query) {
+    return <Loader />;
+  }
 
   return (
     <Layout>
       <Wrapper>
-        <div className="d-flex justify-content-between my-2">
-          <h4>
-            {data?.length > 0 && (
-              <span className="badge bg-primary">{data.length}</span>
-            )}{" "}
-            doctors
-          </h4>{" "}
-          {/* <div>Search Bar</div> */}
+      <div className="d-flex justify-content-between my-2">
+          <h4><span className="badge bg-primary">{data?.count} / {data?.total}</span> Doctors</h4>
+          <>
+            <input
+              type="search"
+              placeholder="Search By Expertise"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </>
         </div>
         <Table striped bordered hover>
           <thead>
@@ -95,6 +110,28 @@ export default function Doctors() {
           <tbody>{tbody_data}</tbody>
         </Table>
       </Wrapper>
+      <nav aria-label="Page navigation example">
+          <ul className="pagination justify-content-center">
+            <li className={`page-item ${selectedPage === 1 && 'disabled'}`}>
+              <a  onClick={()=>setSelectedPage(selectedPage-1)}  className="page-link" href="#" >
+                <BiChevronsLeft/>
+              </a>
+            </li>
+
+            {[...Array(data?.pages).keys()].map((x) => (
+              <li className={`page-item ${selectedPage === x + 1 && "active"}`} key={x}>
+                <a onClick={()=>setSelectedPage(x+1)} className="page-link" href="#">
+                  {x + 1}
+                </a>
+              </li>
+            ))}
+            <li className={`page-item ${selectedPage === data?.pages && 'disabled'}`}>
+              <a onClick={()=>setSelectedPage(selectedPage+1)} className="page-link" href="#">
+                <BiChevronsRight/>
+              </a>
+            </li>
+          </ul>
+        </nav>
     </Layout>
   );
 }

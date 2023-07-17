@@ -24,6 +24,7 @@ export default function Users() {
   useEffect(() => {
     setQuery({ ...query, search, page: selectedPage });
   }, [search, selectedPage]);
+
   const handleDelete = async (id) => {
     try {
       const res = await deleteUser(id);
@@ -31,10 +32,6 @@ export default function Users() {
     } catch (error) {}
   };
 
-  const handleQuerySubmit = (e) => {
-    e.preventDefault();
-    // setSearch(search);
-  };
   const tbody_data =
     !isLoading &&
     data?.data?.map((user) => {
