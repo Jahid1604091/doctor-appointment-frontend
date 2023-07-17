@@ -83,7 +83,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }),
 
         getAllApprovedDoctors: builder.query({
-            query: ({search}) => `${URL}/approved-doctors?search=${search}`,
+            query: ({search,page}) => `${URL}/approved-doctors?search=${search}&page=${page}`,
             // transformResponse: (response, meta, arg) => response.data,
             // transformErrorResponse: (response, meta, arg) => response.status,
             providesTags: ['User'],
@@ -140,6 +140,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }),
 
 
+
     })
 });
 
@@ -160,5 +161,6 @@ export const {
     useForgotPasswordMutation,
     useResetPasswordMutation,
     useMakePaymentMutation,
+  
 
 } = userApiSlice;

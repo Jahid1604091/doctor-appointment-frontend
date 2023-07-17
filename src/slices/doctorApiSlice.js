@@ -27,6 +27,14 @@ export const doctorApiSlice = apiSlice.injectEndpoints({
             }),
             invalidatesTags: ['User']
         }),
+        addReview:builder.mutation({
+            query: (data) => ({
+                url: `${URL}/${data.id}/review`,
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['User']
+        }),
 
     })
 });
@@ -36,4 +44,5 @@ export const {
     useCheckAvailabilityMutation,
     useGetDoctorDetailsByUserIdQuery,
     useApproveAppointmentMutation,
+    useAddReviewMutation,
 } = doctorApiSlice;

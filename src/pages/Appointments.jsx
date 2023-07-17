@@ -42,7 +42,7 @@ export default function Appointments() {
   const [deleteAppointment, { data: deletedAppointment }] = useDeleteAppointmentMutation();
   const [makePayment] = useMakePaymentMutation();
 
-  const { data: doctors } = useGetAllApprovedDoctorsQuery();
+  const { data: doctors } = useGetAllApprovedDoctorsQuery('');
   const { userInfo } = useSelector((state) => state.auth);
 
   if (data?.length === 0) return <NotFound>No Appointment Found!</NotFound>;

@@ -8,13 +8,15 @@ import Loader from "../components/Loader";
 import Error from "../components/Error";
 import Fetching from "../components/Fetching";
 import NotFound from "../components/NotFound";
+import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
+import Rating from "../components/doctors/Rating";
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [selectedPage, setSelectedPage] = useState(1);
-  const [query, setQuery] = useState({});
+  const [query, setQuery] = useState({page: selectedPage});
   const {
-    data=[],
+    data,
     isLoading,
     isFetching,
     isError,
@@ -39,9 +41,9 @@ export default function Home() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-          {data?.length === 0 && <div>No Approved Doctor Found!</div>}
+          {data?.count === 0 && <div>No Approved Doctor Found!</div>}
           <Row className="">
-            {data?.map((doctor) => {
+            {data?.data?.map((doctor) => {
               return (
                 <Col sm={4} key={doctor._id}>
                   <div disabled={isFetching}>
@@ -56,6 +58,7 @@ export default function Home() {
                         <Card.Subtitle className="mb-2 text-muted text-uppercase">
                           {doctor?.expertise_in}
                         </Card.Subtitle>
+                        <Rating rating={doctor?.rating} reviews={doctor?.numReviews} showReviewNumber />
                         <Card.Text>
                           <span>Fee Per Visit (BDT) : {doctor?.fee}</span>
                         </Card.Text>
@@ -73,6 +76,28 @@ export default function Home() {
           </Row>
         </Container>
       </Wrapper>
+      <nav aria-label="Page navigation example">
+          <ul className="pagination justify-content-center">
+            <li className={`page-item ${selectedPage === 1 && 'disabled'}`}>
+              <a  onClick={()=>setSelectedPage(selectedPage-1)}  className="page-link" href="#" >
+                <BiChevronsLeft/>
+              </a>
+            </li>
+
+            {[...Array(data?.pages).keys()].map((x) => (
+              <li className={`page-item ${selectedPage === x + 1 && "active"}`} key={x}>
+                <a onClick={()=>setSelectedPage(x+1)} className="page-link" href="#">
+                  {x + 1}
+                </a>
+              </li>
+            ))}
+            <li className={`page-item ${selectedPage === data?.pages && 'disabled'}`}>
+              <a onClick={()=>setSelectedPage(selectedPage+1)} className="page-link" href="#">
+                <BiChevronsRight/>
+              </a>
+            </li>
+          </ul>
+        </nav>
     </Layout>
   );
 }
