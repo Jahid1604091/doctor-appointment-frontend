@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { Card, Col, Container, Row } from "react-bootstrap";
+import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import styled from "styled-components";
 import { useGetAllApprovedDoctorsQuery } from "../slices/userApiSlice";
 import { Link } from "react-router-dom";
@@ -14,14 +14,9 @@ import Rating from "../components/doctors/Rating";
 export default function Home() {
   const [search, setSearch] = useState("");
   const [selectedPage, setSelectedPage] = useState(1);
-  const [query, setQuery] = useState({page: selectedPage});
-  const {
-    data,
-    isLoading,
-    isFetching,
-    isError,
-    error,
-  } = useGetAllApprovedDoctorsQuery(query);
+  const [query, setQuery] = useState({ page: selectedPage });
+  const { data, isLoading, isFetching, isError, error } =
+    useGetAllApprovedDoctorsQuery(query);
   useEffect(() => {
     setQuery({ ...query, search, page: selectedPage });
   }, [search, selectedPage]);
@@ -30,17 +25,17 @@ export default function Home() {
   // if (isLoading) return <Loader />;
   // if (isFetching) return <Fetching />;
 
-
   return (
     <Layout>
       <Wrapper>
         <Container>
-        <input
-              type="search"
-              placeholder="Name, Expertise etc ..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+          <Form.Control
+           className="mb-3 text-center"
+            type="search"
+            placeholder="Search by name, expertise area etc ..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           {data?.count === 0 && <div>No Approved Doctor Found!</div>}
           <Row className="">
             {data?.data?.map((doctor) => {
@@ -50,7 +45,10 @@ export default function Home() {
                     <Card className="card mb-3">
                       <Card.Img
                         variant="top"
-                        src={doctor?.user?.avatar?.url || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUiF_OQ_-RS1ksidGVXXFQ-nJehHFxbHfIoQ&usqp=CAU'}
+                        src={
+                          doctor?.user?.avatar?.url ||
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUiF_OQ_-RS1ksidGVXXFQ-nJehHFxbHfIoQ&usqp=CAU"
+                        }
                         className="avatar"
                       />
                       <Card.Body>
@@ -58,12 +56,19 @@ export default function Home() {
                         <Card.Subtitle className="mb-2 text-muted text-uppercase">
                           {doctor?.expertise_in}
                         </Card.Subtitle>
-                        <Rating rating={doctor?.rating} reviews={doctor?.numReviews} showReviewNumber />
+                        <Rating
+                          rating={doctor?.rating}
+                          reviews={doctor?.numReviews}
+                          showReviewNumber
+                        />
                         <Card.Text>
                           <span>Fee Per Visit (BDT) : {doctor?.fee}</span>
                         </Card.Text>
                         <div className="text-center">
-                          <Link to={`doctors/${doctor?._id}`} className="btn btn-primary">
+                          <Link
+                            to={`doctors/${doctor?._id}`}
+                            className="btn btn-primary"
+                          >
                             Appoint Now
                           </Link>
                         </div>
@@ -77,27 +82,46 @@ export default function Home() {
         </Container>
       </Wrapper>
       <nav aria-label="Page navigation example">
-          <ul className="pagination justify-content-center">
-            <li className={`page-item ${selectedPage === 1 && 'disabled'}`}>
-              <a  onClick={()=>setSelectedPage(selectedPage-1)}  className="page-link" href="#" >
-                <BiChevronsLeft/>
-              </a>
-            </li>
+        <ul className="pagination justify-content-center">
+          <li className={`page-item ${selectedPage === 1 && "disabled"}`}>
+            <a
+              onClick={() => setSelectedPage(selectedPage - 1)}
+              className="page-link"
+              href="#"
+            >
+              <BiChevronsLeft />
+            </a>
+          </li>
 
-            {[...Array(data?.pages).keys()].map((x) => (
-              <li className={`page-item ${selectedPage === x + 1 && "active"}`} key={x}>
-                <a onClick={()=>setSelectedPage(x+1)} className="page-link" href="#">
-                  {x + 1}
-                </a>
-              </li>
-            ))}
-            <li className={`page-item ${selectedPage === data?.pages && 'disabled'}`}>
-              <a onClick={()=>setSelectedPage(selectedPage+1)} className="page-link" href="#">
-                <BiChevronsRight/>
+          {[...Array(data?.pages).keys()].map((x) => (
+            <li
+              className={`page-item ${selectedPage === x + 1 && "active"}`}
+              key={x}
+            >
+              <a
+                onClick={() => setSelectedPage(x + 1)}
+                className="page-link"
+                href="#"
+              >
+                {x + 1}
               </a>
             </li>
-          </ul>
-        </nav>
+          ))}
+          <li
+            className={`page-item ${
+              selectedPage === data?.pages && "disabled"
+            }`}
+          >
+            <a
+              onClick={() => setSelectedPage(selectedPage + 1)}
+              className="page-link"
+              href="#"
+            >
+              <BiChevronsRight />
+            </a>
+          </li>
+        </ul>
+      </nav>
     </Layout>
   );
 }
