@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseQuery = fetchBaseQuery({
+//   baseUrl: "https://fair-blue-bat-sock.cyclic.app",
   baseUrl: "http://localhost:5000",
+  credentials:'include',
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Credentials":true,
   },
-  credentials: "include",
-  SameSite:"None",
+  
+  sameSite:"None",
   Secure:true
 });
 
