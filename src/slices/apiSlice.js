@@ -1,14 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseQuery = fetchBaseQuery({
 //   baseUrl: "https://fair-blue-bat-sock.cyclic.app",
-  baseUrl: "http://localhost:5000",
+  baseUrl: "https://prussian-blue-monkey-kilt.cyclic.cloud/",
+//   baseUrl: "http://localhost:5000",
   credentials:'include',
-  headers: {
-    "Content-Type": "application/json",
+
+  prepareHeaders: (headers) => {
+    headers.set("Content-Type", "application/json");
+    return headers;
   },
-  
-  sameSite:"None",
-  Secure:true
+
 });
 
 export const apiSlice = createApi({
@@ -16,6 +17,7 @@ export const apiSlice = createApi({
   baseQuery,
   tagTypes: ["User", "Doctors"],
   endpoints: (builder) => ({}),
+
 });
 
 export const countryApiSlice = createApi({

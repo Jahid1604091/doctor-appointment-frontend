@@ -87,6 +87,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
             // transformResponse: (response, meta, arg) => response.data,
             // transformErrorResponse: (response, meta, arg) => response.status,
             providesTags: ['User'],
+            credentials: "include",
         }),
 
         getAllAppointments: builder.query({

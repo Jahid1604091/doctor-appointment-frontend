@@ -6,8 +6,9 @@ const URL = '/api/admin';
 export const adminApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getAllUsers: builder.query({
-            query:({search,page})=> `${URL}/users?search=${search}&page=${page}`,
+            query:({search='',page})=> `${URL}/users?search=${search}&page=${page}`,
             providesTags:['Users'],
+            
             // transformResponse: responseData=>responseData.data
         }),
         deleteUser:builder.mutation({
@@ -19,7 +20,8 @@ export const adminApiSlice = apiSlice.injectEndpoints({
         }),
         getAllDoctors: builder.query({
             query:({search,page})=> `${URL}/doctors?search=${search}&page=${page}`,
-            providesTags:['Doctors']
+            providesTags:['Doctors'],
+           
         }),
         approveAsDoctor:builder.mutation({
             query:(id)=>({
