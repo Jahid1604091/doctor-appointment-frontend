@@ -4,13 +4,15 @@ import { Button, Card, Col, Tab, Tabs } from "react-bootstrap";
 import { BiTimeFive } from "react-icons/bi";
 import { useDeleteAppointmentMutation } from "../../slices/userApiSlice";
 import ApproveModal from "../ApproveModal";
+import useAssociateDoctor from "../../hooks/useAssociateDoctor";
 
 export default function AppointmentsAsDoctor({
   data,
   associate_doctor,
   payForAppointment,
   activeTab,
-  seActiveTab
+  seActiveTab,
+  doctors
 }) {
   
   const [deleteAppointment, { data: deletedAppointment }] =
@@ -133,7 +135,7 @@ export default function AppointmentsAsDoctor({
                   <Card.Body>
                     <Card.Title>
                       <div className="d-flex justify-content-between">
-                        {associate_doctor(appointment.doctor._id)}{" "}
+                        {useAssociateDoctor(doctors,appointment.doctor._id)}{" "}
                         <p className="badge bg-primary text-wrap">
                           {appointment.status}
                         </p>

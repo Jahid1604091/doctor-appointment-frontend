@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 
 import AppointmentsAsDoctor from "../components/doctors/AppointmentsAsDoctor";
 import { useLocation } from "react-router-dom";
+import useAssociateDoctor from "../hooks/useAssociateDoctor";
 
 export default function Appointments() {
   // JSON.parse(localStorage.getItem('activeTab')) || 
@@ -47,10 +48,10 @@ export default function Appointments() {
 
   if (data?.length === 0) return <NotFound>No Appointment Found!</NotFound>;
 
-  const associate_doctor = (doctorId) => {
-    const user = doctors?.find((doc) => doc._id == doctorId);
-    return user?.user.name;
-  };
+  // const associate_doctor = (doctorId) => {
+  //   const user = doctors?.find((doc) => doc._id == doctorId);
+  //   return user?.user.name;
+  // };
 
   const paymentHandler = async (id,fee) => {
 
@@ -70,7 +71,8 @@ export default function Appointments() {
         {userInfo?.isDoctor ? (
           <AppointmentsAsDoctor
             data={data}
-            associate_doctor={associate_doctor}
+            doctors={doctors}
+            // associate_doctor={associate_doctor}
             payForAppointment={paymentHandler}
             activeTab={activeTab}
             seActiveTab={seActiveTab}
@@ -82,7 +84,7 @@ export default function Appointments() {
                 <Card className="card my-4">
                   <Card.Body>
                     <Card.Title className="d-flex justify-content-between">
-                      {associate_doctor(appointment?.doctor._id)}{" "}
+                      {useAssociateDoctor(doctors,appointment?.doctor._id)}{" "}
                       <p className="badge bg-primary text-wrap">
                         {appointment.status}
                       </p>
