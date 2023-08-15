@@ -39,7 +39,7 @@ export default function Appointments() {
 }, [isValidated,search])
 
 
-  const { data } = useGetAllAppointmentsQuery();
+  const  data  = useGetAllAppointmentsQuery();
   const [deleteAppointment, { data: deletedAppointment }] = useDeleteAppointmentMutation();
   const [makePayment] = useMakePaymentMutation();
 
@@ -47,11 +47,6 @@ export default function Appointments() {
   const { userInfo } = useSelector((state) => state.auth);
 
   if (data?.length === 0) return <NotFound>No Appointment Found!</NotFound>;
-
-  // const associate_doctor = (doctorId) => {
-  //   const user = doctors?.find((doc) => doc._id == doctorId);
-  //   return user?.user.name;
-  // };
 
   const paymentHandler = async (id,fee) => {
 
@@ -70,7 +65,7 @@ export default function Appointments() {
       <Row>
         {userInfo?.isDoctor ? (
           <AppointmentsAsDoctor
-            data={data}
+            data={data?.data}
             doctors={doctors}
             // associate_doctor={associate_doctor}
             payForAppointment={paymentHandler}
@@ -78,13 +73,13 @@ export default function Appointments() {
             seActiveTab={seActiveTab}
           />
         ) : (
-          data?.map((appointment) => {
+          data?.data?.map((appointment) => {
             return (
               <Col key={appointment?._id} md={4}>
                 <Card className="card my-4">
                   <Card.Body>
                     <Card.Title className="d-flex justify-content-between">
-                      {useAssociateDoctor(doctors,appointment?.doctor._id)}{" "}
+                      { doctors && useAssociateDoctor(doctors,appointment?.doctor._id)}{" "}
                       <p className="badge bg-primary text-wrap">
                         {appointment.status}
                       </p>
