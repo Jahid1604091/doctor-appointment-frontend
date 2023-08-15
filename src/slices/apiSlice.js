@@ -5,10 +5,7 @@ const baseQuery = fetchBaseQuery({
   // baseUrl: "http://localhost:5000",
   credentials:'include',
 
-  prepareHeaders: (headers) => {
-    headers.set("Content-Type", "application/json");
-    return headers;
-  },
+
 
 });
 

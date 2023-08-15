@@ -8,7 +8,6 @@ import useAssociateDoctor from "../../hooks/useAssociateDoctor";
 
 export default function AppointmentsAsDoctor({
   data,
-  associate_doctor,
   payForAppointment,
   activeTab,
   seActiveTab,
