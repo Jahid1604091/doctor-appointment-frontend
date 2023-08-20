@@ -2,27 +2,55 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import FormContainer from "../components/FormContainer";
 import { useEffect, useState } from "react";
-import { Row, Col, Spinner } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "../slices/userApiSlice";
+import {
+  useGetUserInfoFromGoogleLoginQuery,
+  useLoginMutation,
+} from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-hot-toast";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (userInfo) {
-      navigate("/");
-    }
-  }, [userInfo, navigate]);
+  // const {getUserInfoFromGoogleLogin} = useGetUserInfoFromGoogleLoginQuery();
+  // console.log(getUserInfoFromGoogleLogin)
+
+  // console.log(userInfo)
+  // useEffect(() => {
+  //   if (userInfo) {
+  //     navigate("/");
+  //   }
+  // }, [userInfo, navigate]);
+
+  // useEffect(()=>{
+  //   const getUserInfo = async () =>{
+  //       const res = await  fetch("http://localhost:5000/auth/google", {
+  //         method: "GET",
+  //         credentials: "include",
+  //         headers: {
+          
+  //           "Content-Type": "application/json",
+  //           "Access-Control-Allow-Credentials": true,
+  //           "Access-Control-Allow-Origin": "*"
+  //         }
+  //       })
+  //       const data = await res.json();
+  //       console.log(data)
+  //   }
+
+  //   getUserInfo()
+  // },[])
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,6 +64,18 @@ function Login() {
       console.log(error?.data?.msg || error.error);
     }
   };
+
+  // if( gLogin && data?.user){
+  //   dispatch(setCredentials({ ...data?.user }));
+  //   navigate("/");
+  //   toast.success("Logged In!");
+  // }
+
+  const handleLoginGoogle = () => {
+   window.open("http://localhost:5000/auth/google", "_self");
+ 
+  };
+
   return (
     <FormContainer>
       <h3 className="text-center my-1">Login</h3>
@@ -70,12 +110,15 @@ function Login() {
             />
             Loading...
           </Button>
-        ) :  (
+        ) : (
           <div className="d-flex justify-content-between">
-          <Button variant="primary" type="submit">
-            Submit
-          </Button> 
-          <p> Forgot Password ? <Link to="/forgot-password">RESET</Link></p>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+            <p>
+              {" "}
+              Forgot Password ? <Link to="/forgot-password">RESET</Link>
+            </p>
           </div>
         )}
       </Form>
@@ -83,7 +126,8 @@ function Login() {
       <p>
         New Customer ? <Link to="/register">Register</Link>
       </p>
-    
+
+      <button onClick={handleLoginGoogle}>Google Login</button>
     </FormContainer>
   );
 }

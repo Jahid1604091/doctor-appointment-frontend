@@ -13,6 +13,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['User']
         }),
 
+        getUserInfoFromGoogleLogin: builder.query({
+            query: () =>  `/auth/google`,
+            providesTags: ['User']
+        }),
+
         register: builder.mutation({
             query: (data) => ({
                 url: `${URL}`,
@@ -112,6 +117,11 @@ export const userApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['User']
         }),
 
+        logoutGoogle: builder.query({
+            query: () => `/auth/logout`,
+            providesTags: ['User']
+        }),
+
         uploadAvatar: builder.mutation({
             query: (data) => ({
                 url: `/api/upload/avatar`,
@@ -147,6 +157,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useLoginMutation,
+    useGetUserInfoFromGoogleLoginQuery,
     useRegisterMutation,
     useRegisterAsDoctorMutation,
     useUpdateProfileMutation,
@@ -156,6 +167,7 @@ export const {
     useGetAllAppointmentsQuery,
     useNewAppointmentMutation,
     useLogoutMutation,
+    useLogoutGoogleQuery,
     useDeleteAppointmentMutation,
     useUploadFileMutation,
     useUploadAvatarMutation,

@@ -12,6 +12,7 @@ import { BiChevronsLeft, BiChevronsRight } from "react-icons/bi";
 import Rating from "../components/doctors/Rating";
 
 export default function Home() {
+ 
   const [search, setSearch] = useState("");
   const [selectedPage, setSelectedPage] = useState(1);
   const [query, setQuery] = useState({ page: selectedPage });
@@ -24,6 +25,7 @@ export default function Home() {
   // if (data.length === 0) return <NotFound>No Approved Doctor Found!</NotFound>;
   // if (isLoading) return <Loader />;
   // if (isFetching) return <Fetching />;
+
 
   return (
     <Layout>

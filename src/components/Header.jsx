@@ -32,7 +32,6 @@ function Header() {
   const navigate = useNavigate();
 
   const [logoutApi] = useLogoutMutation();
-
   const logoutHandler = async () => {
     try {
       await logoutApi().unwrap();

@@ -13,7 +13,7 @@ export default function Sidebar() {
   const { pathname } = useLocation();
   const { collapsedSidebar } = useSelector((state) => state.app);
   const {
-    userInfo: { role,isDoctor },
+    userInfo
   } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -99,7 +99,7 @@ export default function Sidebar() {
   ];
 
   const menuToRender =
-    role === "user" && !isDoctor ? userMenu : role === "admin" ? adminMenu : doctorMenu;
+    userInfo?.role === "user" && !userInfo?.isDoctor ? userMenu : userInfo?.role === "admin" ? adminMenu : doctorMenu;
 
   return (
     <Wrapper>
