@@ -22,35 +22,15 @@ function Login() {
   const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
-  // const {getUserInfoFromGoogleLogin} = useGetUserInfoFromGoogleLoginQuery();
-  // console.log(getUserInfoFromGoogleLogin)
+  const { data } = useGetUserInfoFromGoogleLoginQuery();
 
-  // console.log(userInfo)
   // useEffect(() => {
-  //   if (userInfo) {
+  //   if (data?.user) {
+  //     dispatch(setCredentials({ ...data?.user }));
   //     navigate("/");
+  //     toast.success("Logged In!");
   //   }
-  // }, [userInfo, navigate]);
-
-  // useEffect(()=>{
-  //   const getUserInfo = async () =>{
-  //       const res = await  fetch("http://localhost:5000/auth/google", {
-  //         method: "GET",
-  //         credentials: "include",
-  //         headers: {
-          
-  //           "Content-Type": "application/json",
-  //           "Access-Control-Allow-Credentials": true,
-  //           "Access-Control-Allow-Origin": "*"
-  //         }
-  //       })
-  //       const data = await res.json();
-  //       console.log(data)
-  //   }
-
-  //   getUserInfo()
-  // },[])
-
+  // }, [data?.user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,15 +45,13 @@ function Login() {
     }
   };
 
-  // if( gLogin && data?.user){
-  //   dispatch(setCredentials({ ...data?.user }));
-  //   navigate("/");
-  //   toast.success("Logged In!");
-  // }
-
   const handleLoginGoogle = () => {
-   window.open("http://localhost:5000/auth/google", "_self");
- 
+    window.open("http://localhost:5000/auth/google", "_self");
+    if (data?.user) {
+      dispatch(setCredentials({ ...data?.user }));
+      navigate("/");
+      toast.success("Logged In!");
+    }
   };
 
   return (

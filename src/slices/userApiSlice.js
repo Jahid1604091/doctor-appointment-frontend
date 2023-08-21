@@ -14,7 +14,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         }),
 
         getUserInfoFromGoogleLogin: builder.query({
-            query: () =>  `/auth/google`,
+            query: () =>  `/auth/login/success`,
             providesTags: ['User']
         }),
 
