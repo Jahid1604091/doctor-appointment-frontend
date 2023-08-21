@@ -1,11 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const baseQuery = fetchBaseQuery({
 
-  // baseUrl: "https://prussian-blue-monkey-kilt.cyclic.cloud",
-  baseUrl: "http://localhost:5000",
+  baseUrl: "https://prussian-blue-monkey-kilt.cyclic.cloud",
+  // baseUrl: "http://localhost:5000",
   credentials:'include',
-
-
 
 });
 

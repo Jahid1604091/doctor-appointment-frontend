@@ -11,6 +11,8 @@ import {
 } from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-hot-toast";
+import {FcGoogle} from 'react-icons/fc';
+import styled from "styled-components";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -55,6 +57,7 @@ function Login() {
   };
 
   return (
+    <Wrapper>
     <FormContainer>
       <h3 className="text-center my-1">Login</h3>
       <Form onSubmit={handleSubmit}>
@@ -104,10 +107,23 @@ function Login() {
       <p>
         New Customer ? <Link to="/register">Register</Link>
       </p>
-
-      <button onClick={handleLoginGoogle}>Google Login</button>
+      <p className="divider">Or</p>
+      <button onClick={handleLoginGoogle} className="google-btn"> <FcGoogle size={18}/> Login With Google</button>
     </FormContainer>
+    </Wrapper>
   );
 }
 
+const Wrapper = styled.section` 
+  .divider{
+    text-align:center;
+  }
+  .google-btn{
+    border:1px solid #ececec;
+    padding:5px;
+    display:flex;
+    align-items:center; 
+  }
+
+`
 export default Login;
