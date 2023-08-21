@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { useDispatch, useSelector } from "react-redux";
-import { useLogoutMutation } from "../slices/userApiSlice";
+import { useLogoutGoogleQuery, useLogoutMutation } from "../slices/userApiSlice";
 import { logout } from "../slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -32,10 +32,12 @@ function Header() {
   const navigate = useNavigate();
 
   const [logoutApi] = useLogoutMutation();
+  // const {logoutGoogle} = useLogoutGoogleQuery();
   const logoutHandler = async () => {
     try {
       await logoutApi().unwrap();
       dispatch(logout());
+      // dispatch(logoutGoogle());
       navigate("/login");
       toast("Logged Out !");
     } catch (error) {

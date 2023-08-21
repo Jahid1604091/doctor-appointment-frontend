@@ -13,6 +13,7 @@ import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-hot-toast";
 import {FcGoogle} from 'react-icons/fc';
 import styled from "styled-components";
+import { HOST } from "../utils/contstants";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -47,13 +48,10 @@ function Login() {
     }
   };
 
-  const handleLoginGoogle = () => {
-    window.open("http://localhost:5000/auth/google", "_self");
-    if (data?.user) {
-      dispatch(setCredentials({ ...data?.user }));
-      navigate("/");
-      toast.success("Logged In!");
-    }
+  const handleLoginGoogle = async() => {
+    window.open(HOST+'/auth/google', "_self");
+
+
   };
 
   return (
@@ -107,8 +105,8 @@ function Login() {
       <p>
         New Customer ? <Link to="/register">Register</Link>
       </p>
-      <p className="divider">Or</p>
-      <button onClick={handleLoginGoogle} className="google-btn"> <FcGoogle size={18}/> Login With Google</button>
+      {/* <p className="divider">Or</p>
+      <button onClick={handleLoginGoogle} className="google-btn"> <FcGoogle size={18}/> Login With Google</button> */}
     </FormContainer>
     </Wrapper>
   );
