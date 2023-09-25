@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import AppointmentsAsDoctor from "../components/doctors/AppointmentsAsDoctor";
 import { useLocation } from "react-router-dom";
 import useAssociateDoctor from "../hooks/useAssociateDoctor";
+import { toast } from "react-hot-toast";
+import { socket } from "../App";
 
 export default function Appointments() {
   // JSON.parse(localStorage.getItem('activeTab')) || 
@@ -35,6 +37,7 @@ export default function Appointments() {
   useEffect(() => {
     if (search.split('=')[1] === 'VALID') {
         setIsValidated(true)
+        
     }
 }, [isValidated,search])
 
@@ -55,9 +58,14 @@ export default function Appointments() {
         tran_id: id,
     }
     const { data: { data } } = await makePayment(payment_data);
-    await window.location.replace(data?.GatewayPageURL);
+     window.location.replace(data?.GatewayPageURL);
 }
 
+
+useEffect(()=>{
+  socket?.on('delete_appointment',data=>console.log(data))
+
+},[deleteAppointment])
   
   return (
     <Layout>

@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    collapsedSidebar:false
+    collapsedSidebar:false,
+ 
 }
 
 const appSlice = createSlice({
@@ -10,7 +11,8 @@ const appSlice = createSlice({
     reducers:{
         setCollapsed:(state,action)=>{
             state.collapsedSidebar = action.payload
-        }
+        },
+       
     }
 });
 

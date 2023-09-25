@@ -71,7 +71,7 @@ export default function Appointment() {
       date,
       time,
     });
-    if (data.success) {
+    if (data?.success) {
       toast.success("Appointment Done ! Wait for Doctor respond");
       setAvailable(false);
     } else {

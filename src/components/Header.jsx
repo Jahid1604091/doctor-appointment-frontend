@@ -27,7 +27,7 @@ function Header() {
     }
   }, [showLinks]);
 
-  const { userInfo } = useSelector((state) => state.auth);
+  const { userInfo,socket } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -44,6 +44,8 @@ function Header() {
       console.log(error.message);
     }
   };
+
+  socket?.on('new_appoinment',data=>console.log(data))
   return (
     <Wrapper>
       <nav>
